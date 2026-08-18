@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coucou 👋 — Fabio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#150826;
+    --bg-deep2:#1f0a35;
+    --glow-pink:#ff2e88;
+    --glow-violet:#7c3aed;
+    --gold:#ffd23f;
+    --mint:#00e5c7;
+    --card-bg:rgba(255,255,255,0.07);
+    --card-border:rgba(255,255,255,0.14);
+    --text-light:#fdf6ff;
+    --text-dim:#c9b8de;
+    --radius:26px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    min-height:100vh;
+    font-family:'Nunito',sans-serif;
+    color:var(--text-light);
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,46,136,0.35), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(124,58,237,0.4), transparent 45%),
+      radial-gradient(circle at 50% 90%, rgba(0,229,199,0.18), transparent 50%),
+      linear-gradient(160deg, var(--bg-deep), var(--bg-deep2));
+    overflow-x:hidden;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+
+  /* --- floating decorations --- */
+  .floaters{
+    position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+  }
+  .floaters span{
+    position:absolute;
+    font-size:clamp(22px,4vw,40px);
+    opacity:0.35;
+    animation:float 9s ease-in-out infinite;
+    filter:drop-shadow(0 0 12px rgba(255,255,255,0.15));
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-38px) rotate(12deg);}
+  }
+
+  /* --- card shell --- */
+  .stage{
+    position:relative; z-index:1;
+    width:100%; max-width:560px;
+  }
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-radius:var(--radius);
+    padding:clamp(28px,5vw,48px);
+    box-shadow:0 30px 80px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+    text-align:center;
+    animation:pop 0.5s cubic-bezier(.26,1.4,.44,1);
+  }
+  @keyframes pop{
+    0%{opacity:0; transform:translateY(24px) scale(0.94);}
+    100%{opacity:1; transform:translateY(0) scale(1);}
+  }
+
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  .eyebrow{
+    display:inline-block;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--mint);
+    background:rgba(0,229,199,0.12);
+    border:1px solid rgba(0,229,199,0.3);
+    padding:6px 16px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+
+  h1{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:800;
+    font-size:clamp(28px,6vw,40px);
+    line-height:1.15;
+    margin:0 0 12px;
+  }
+
+  p.sub{
+    color:var(--text-dim);
+    font-size:clamp(15px,2.6vw,18px);
+    font-weight:600;
+    margin:0 0 30px;
+    line-height:1.5;
+  }
+
+  .big-emoji{
+    font-size:clamp(56px,14vw,84px);
+    margin-bottom:6px;
+    display:inline-block;
+    animation:wiggle 2.2s ease-in-out infinite;
+  }
+  @keyframes wiggle{
+    0%,100%{transform:rotate(-4deg);}
+    50%{transform:rotate(4deg);}
+  }
+
+  /* --- buttons --- */
+  .btn-row{
+    display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+    margin-top:8px;
+  }
+  button{
+    font-family:'Baloo 2',sans-serif;
+    cursor:pointer;
+    border:none;
+    outline:none;
+  }
+  .btn{
+    font-size:clamp(16px,2.8vw,19px);
+    font-weight:700;
+    padding:16px 30px;
+    border-radius:16px;
+    transition:transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    white-space:nowrap;
+  }
+  .btn:active{transform:scale(0.96);}
+  .btn-yes{
+    background:linear-gradient(135deg, var(--mint), #00b89c);
+    color:#052018;
+    box-shadow:0 10px 24px -8px rgba(0,229,199,0.6);
+  }
+  .btn-yes:hover{filter:brightness(1.08); box-shadow:0 14px 30px -8px rgba(0,229,199,0.75);}
+  .btn-no{
+    background:rgba(255,255,255,0.1);
+    color:var(--text-light);
+    border:1px solid rgba(255,255,255,0.2);
+  }
+  .btn-no:hover{background:rgba(255,255,255,0.16);}
+
+  .btn-gold{
+    background:linear-gradient(135deg, var(--gold), #ff9d3f);
+    color:#3a1a00;
+    box-shadow:0 10px 26px -8px rgba(255,157,63,0.6);
+  }
+  .btn-gold:hover{filter:brightness(1.06);}
+
+  /* --- screen 1b : contact form --- */
+  textarea{
+    width:100%;
+    min-height:110px;
+    margin-top:10px;
+    margin-bottom:18px;
+    border-radius:16px;
+    border:1px solid var(--card-border);
+    background:rgba(255,255,255,0.06);
+    color:var(--text-light);
+    font-family:'Nunito',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    padding:14px 16px;
+    resize:vertical;
+  }
+  textarea::placeholder{color:var(--text-dim);}
+  textarea:focus{outline:2px solid var(--mint); outline-offset:2px;}
+
+  .link-back{
+    display:inline-block;
+    margin-top:16px;
+    color:var(--text-dim);
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    text-decoration:underline;
+    background:none;
+    border:none;
+  }
+  .link-back:hover{color:var(--text-light);}
+
+  /* --- money chase game --- */
+  .money-buttons{
+    position:relative;
+    display:flex; align-items:center; justify-content:center; gap:16px;
+    flex-wrap:wrap;
+    min-height:120px;
+  }
+  #btnOuiMoney{transition:transform 0.28s cubic-bezier(.26,1.4,.44,1), box-shadow 0.28s ease;}
+  #btnNonMoney{transition:transform 0.22s ease, opacity 0.22s ease, left 0.22s ease, top 0.22s ease;}
+  .taunt{
+    margin-top:18px;
+    font-weight:800;
+    font-family:'Baloo 2',sans-serif;
+    color:var(--gold);
+    min-height:22px;
+    font-size:clamp(14px,3vw,16px);
+  }
+
+  /* --- paypal screen --- */
+  .paypal-box{
+    display:flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:12px 14px;
+    margin-bottom:26px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .paypal-email{
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    font-size:clamp(14px,3.4vw,17px);
+    color:var(--mint);
+    word-break:break-all;
+  }
+  .copy-btn{
+    font-family:'Nunito',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    padding:9px 14px;
+    border-radius:10px;
+    background:rgba(0,229,199,0.16);
+    color:var(--mint);
+    border:1px solid rgba(0,229,199,0.4);
+  }
+  .copy-btn:hover{background:rgba(0,229,199,0.26);}
+
+  .amounts{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+  }
+  .amount-btn{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:clamp(15px,3vw,18px);
+    padding:16px 8px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.08);
+    color:var(--text-light);
+    border:1px solid var(--card-border);
+    transition:transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .amount-btn:hover{transform:translateY(-3px); background:rgba(255,210,63,0.14); border-color:var(--gold);}
+  .amount-btn.selected{background:var(--gold); color:#3a1a00; border-color:var(--gold);}
+
+  .custom-amount{
+    display:flex; gap:10px; align-items:center; justify-content:center;
+    margin-bottom:22px; flex-wrap:wrap;
+  }
+  .custom-amount input{
+    width:130px;
+    font-family:'Nunito',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--card-border);
+    background:rgba(255,255,255,0.06);
+    color:var(--text-light);
+  }
+  .custom-amount input:focus{outline:2px solid var(--gold); outline-offset:2px;}
+  .min-note{color:var(--text-dim); font-size:13px; font-weight:600; margin-top:-10px; margin-bottom:20px;}
+
+  /* --- confetti canvas --- */
+  #confetti-canvas{
+    position:fixed; inset:0; pointer-events:none; z-index:5;
+  }
+
+  .amount-chip{
+    display:inline-block;
+    background:rgba(255,210,63,0.15);
+    border:1px solid rgba(255,210,63,0.5);
+    color:var(--gold);
+    font-family:'Baloo 2',sans-serif;
+    font-weight:800;
+    padding:8px 18px;
+    border-radius:999px;
+    margin-bottom:22px;
+  }
+
+  @media (max-width:420px){
+    .amounts{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<div class="floaters">
+  <span style="top:8%; left:6%; animation-delay:0s;">💶</span>
+  <span style="top:18%; left:82%; animation-delay:1.2s;">🎈</span>
+  <span style="top:70%; left:10%; animation-delay:2s;">💸</span>
+  <span style="top:78%; left:80%; animation-delay:0.6s;">🎉</span>
+  <span style="top:40%; left:90%; animation-delay:1.6s;">✨</span>
+  <span style="top:50%; left:2%; animation-delay:2.4s;">💰</span>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="stage">
+  <div class="card">
+
+    <!-- SCREEN 1 : bonjour -->
+    <section class="screen active" id="screen-hello">
+      <span class="eyebrow">💌 Un message de Fabio</span>
+      <h1>Bonjour ! Ça va ?</h1>
+      <p class="sub">Petit coucou avant d'aller droit au but 😄</p>
+      <div class="btn-row">
+        <button class="btn btn-yes" onclick="goTo('screen-welcome')">Oui, ça va 😄</button>
+        <button class="btn btn-no" onclick="goTo('screen-sad')">Non, pas trop 😕</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 1b : triste -->
+    <section class="screen" id="screen-sad">
+      <div class="big-emoji">😢</div>
+      <h1>Oh non...</h1>
+      <p class="sub">Dis-moi ce qui ne va pas, je suis là pour t'écouter. Écris-moi et je te réponds vite.</p>
+      <textarea id="sadMessage" placeholder="Écris-moi ici..."></textarea>
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="sendSadMessage()">Envoyer à Fabio 💌</button>
+      </div>
+      <button class="link-back" onclick="goTo('screen-hello')">← Retour</button>
+    </section>
+
+    <!-- SCREEN 2 : bienvenue / demande d'argent -->
+    <section class="screen" id="screen-welcome">
+      <span class="eyebrow">🎉 Bienvenue</span>
+      <h1>Bienvenue sur le site de virement de Fabio 💸</h1>
+      <p class="sub">Content que ça aille ! Du coup... tu me donnes de l'argent ? 😇</p>
+      <div class="money-buttons">
+        <button class="btn btn-yes" id="btnOuiMoney" onclick="clickOuiMoney()">Oui, avec plaisir 🥰</button>
+        <button class="btn btn-no" id="btnNonMoney" onclick="clickNonMoney()">Non 🙅</button>
+      </div>
+      <div class="taunt" id="tauntText"></div>
+    </section>
+
+    <!-- SCREEN 3 : paypal -->
+    <section class="screen" id="screen-paypal">
+      <span class="eyebrow">💰 Merci !</span>
+      <h1>Envoie-moi ça juste ici</h1>
+      <p class="sub">Mon PayPal, copie-le en un clic 👇</p>
+
+      <div class="paypal-box">
+        <span class="paypal-email" id="paypalEmail">randrianitovina@gmail.com</span>
+        <button class="copy-btn" onclick="copyEmail()">📋 Copier</button>
+      </div>
+
+      <p class="sub" style="margin-bottom:14px;">Choisis un montant (minimum 50 €) :</p>
+      <div class="amounts">
+        <button class="amount-btn" onclick="chooseAmount(50,this)">50 €</button>
+        <button class="amount-btn" onclick="chooseAmount(75,this)">75 €</button>
+        <button class="amount-btn" onclick="chooseAmount(100,this)">100 €</button>
+        <button class="amount-btn" onclick="chooseAmount(150,this)">150 €</button>
+        <button class="amount-btn" onclick="chooseAmount(250,this)">250 €</button>
+        <button class="amount-btn" onclick="chooseAmount(500,this)">500 €</button>
+      </div>
+
+      <div class="custom-amount">
+        <input type="number" id="customAmount" min="50" step="1" placeholder="Autre montant">
+        <button class="btn btn-gold" onclick="chooseCustomAmount()">Valider</button>
+      </div>
+      <p class="min-note">Le montant minimum accepté est 50 €.</p>
+    </section>
+
+    <!-- SCREEN 4 : merci -->
+    <section class="screen" id="screen-thanks">
+      <div class="big-emoji">❤️</div>
+      <h1>Merci du fond du cœur !</h1>
+      <div class="amount-chip" id="thanksAmount">50 €</div>
+      <p class="sub">Rendez-vous sur PayPal pour finaliser le virement 🚀</p>
+      <div class="btn-row">
+        <a class="btn btn-gold" style="text-decoration:none; display:inline-block;" href="https://www.paypal.com/signin" target="_blank" rel="noopener">Aller sur PayPal 🚀</a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+  function goTo(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function sendSadMessage(){
+    const msg = document.getElementById('sadMessage').value.trim();
+    const body = encodeURIComponent(msg || "Coucou Fabio, ça ne va pas trop...");
+    window.location.href = "mailto:randrianitovina@gmail.com?subject=" + encodeURIComponent("Petit coup de moins bien") + "&body=" + body;
+  }
+
+  /* ---- Le jeu du "Non" qui fuit ---- */
+  let nonClicks = 0;
+  const maxNonClicks = 6;
+  const taunts = [
+    "Tu es sûr ? 👀",
+    "Vraiment vraiment sûr ? 🥺",
+    "Le bouton Oui commence à avoir faim... 😏",
+    "Non résiste de moins en moins 😅",
+    "Allez, un dernier effort... 😈",
+    "Non a disparu. Oui est là pour toi 💛"
+  ];
+
+  function clickNonMoney(){
+    const nonBtn = document.getElementById('btnNonMoney');
+    const ouiBtn = document.getElementById('btnOuiMoney');
+    const taunt = document.getElementById('tauntText');
+
+    nonClicks++;
+    const ouiScale = 1 + nonClicks * 0.32;
+    ouiBtn.style.transform = `scale(${ouiScale})`;
+    ouiBtn.style.boxShadow = `0 ${10+nonClicks*4}px ${24+nonClicks*8}px -8px rgba(0,229,199,0.7)`;
+
+    taunt.textContent = taunts[Math.min(nonClicks-1, taunts.length-1)];
+
+    if(nonClicks < maxNonClicks){
+      const shrink = Math.max(0.35, 1 - nonClicks*0.13);
+      const dx = (Math.random()*180 - 90);
+      const dy = (Math.random()*50 - 25);
+      nonBtn.style.transform = `translate(${dx}px, ${dy}px) scale(${shrink})`;
+    } else {
+      nonBtn.style.opacity = '0';
+      nonBtn.style.transform += ' scale(0)';
+      setTimeout(()=>{ nonBtn.style.display = 'none'; }, 220);
+      document.querySelector('.card').style.animation = 'shake 0.4s';
+      setTimeout(()=>{ document.querySelector('.card').style.animation=''; }, 400);
+    }
+  }
+
+  function clickOuiMoney(){
+    goTo('screen-paypal');
+  }
+
+  function copyEmail(){
+    const email = document.getElementById('paypalEmail').textContent;
+    navigator.clipboard.writeText(email).then(()=>{
+      const btn = event.target;
+      const old = btn.textContent;
+      btn.textContent = '✅ Copié !';
+      setTimeout(()=>{ btn.textContent = old; }, 1600);
+    });
+  }
+
+  let selectedAmount = 0;
+  function chooseAmount(amount, btn){
+    document.querySelectorAll('.amount-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedAmount = amount;
+    finalizeAmount(amount);
+  }
+
+  function chooseCustomAmount(){
+    const input = document.getElementById('customAmount');
+    const val = parseInt(input.value, 10);
+    if(!val || val < 50){
+      input.style.outline = '2px solid #ff2e88';
+      input.placeholder = 'Minimum 50 € !';
+      input.value = '';
+      return;
+    }
+    finalizeAmount(val);
+  }
+
+  function finalizeAmount(amount){
+    document.getElementById('thanksAmount').textContent = amount + ' €';
+    goTo('screen-thanks');
+    burstConfetti();
+  }
+
+  /* ---- shake keyframes injected ---- */
+  const styleTag = document.createElement('style');
+  styleTag.textContent = `@keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-10px);}
+    40%{transform:translateX(10px);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(6px);}
+  }`;
+  document.head.appendChild(styleTag);
+
+  /* ---- confetti ---- */
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  const colors = ['#ff2e88','#ffd23f','#00e5c7','#7c3aed','#ffffff'];
+  let particles = [];
+
+  function burstConfetti(){
+    particles = [];
+    for(let i=0;i<140;i++){
+      particles.push({
+        x: canvas.width/2,
+        y: canvas.height/2,
+        vx: (Math.random()-0.5)*14,
+        vy: (Math.random()-1.2)*14,
+        size: 5 + Math.random()*6,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        rot: Math.random()*360,
+        vr: (Math.random()-0.5)*12,
+        life: 100 + Math.random()*40
+      });
+    }
+    requestAnimationFrame(animateConfetti);
+  }
+
+  function animateConfetti(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let alive = false;
+    particles.forEach(p=>{
+      if(p.life <= 0) return;
+      alive = true;
+      p.vy += 0.28;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.life--;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.max(p.life/100, 0);
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+      ctx.restore();
+    });
+    if(alive) requestAnimationFrame(animateConfetti);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+</script>
+
+</body>
+</html>
